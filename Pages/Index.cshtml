@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<input type="text" name="q"
+       hx-get="/trigger_delay"
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#search-results"
+       placeholder="Search..." />
+<div id="search-results"></div>
+
+@if (Model.data.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.data)
+            {
+                <tr>
+                    <td>
+                        @c.Name
+                    </td>
+                    <td>
+                        @{ 
+                            var url = "/Details?customerId=" + c.Id;
+                        }
+                        <button hx-push-url="true" hx-get="@url" hx-target="#replaceDiv" hx-swap="outerHTML" class="btn btn-primary">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+}
